@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>To manage solutins and projects</Description>
+    </PropertyGroup>
+
+</Project>
