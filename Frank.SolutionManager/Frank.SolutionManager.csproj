@@ -4,4 +4,8 @@
         <Description>To manage solutins and projects</Description>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="SlnParser" Version="4.0.0" />
+    </ItemGroup>
+
 </Project>

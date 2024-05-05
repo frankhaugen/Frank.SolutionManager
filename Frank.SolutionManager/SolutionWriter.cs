@@ -4,7 +4,7 @@ namespace Frank.SolutionManager;
 
 public static class SolutionWriter
 {
-    private static readonly StringBuilder SolutionFileContent = new();
+    private static readonly IIndentedStringBuilder SolutionFileContent = new IndentedStringBuilder();
 
     public static async Task WriteSolutionFileAsync(DirectoryInfo solutionDirectory, ISolution solution)
     {
@@ -16,27 +16,45 @@ public static class SolutionWriter
 
     private static void AppendHeader()
     {
-        SolutionFileContent.AppendLine("Microsoft Visual Studio Solution File, Format Version 12.00");
-        SolutionFileContent.AppendLine("# Visual Studio Version 16");
-        SolutionFileContent.AppendLine("VisualStudioVersion = 16.0.31105.61");
-        SolutionFileContent.AppendLine("MinimumVisualStudioVersion = 10.0.40219.1");
+        SolutionFileContent.WriteLine("Microsoft Visual Studio Solution File, Format Version 12.00");
+        SolutionFileContent.WriteLine("# Visual Studio Version 17");
+        SolutionFileContent.WriteLine("VisualStudioVersion = 17.0.31903.59");
+        SolutionFileContent.WriteLine("MinimumVisualStudioVersion = 10.0.40219.1");
     }
 
     private static void AppendProjectsAndFolders(ISolution solution)
     {
         foreach (var project in solution.Projects)
         {
-            SolutionFileContent.AppendLine($"Project(\"{{{project.Id}}}\") = \"{project.Name}\", \"{project.ProjectFile.Name}\", \"{{{project.Id}}}\"");
-            SolutionFileContent.AppendLine("EndProject");
+            SolutionFileContent.WriteLine($"Project(\"{{{ProjectTypeIdentifiers.CSharp}}}\") = \"{project.Name}\", \"{Path.Combine(project.ProjectFile.Directory!.Name, project.ProjectFile.Name)}\", \"{{{project.Id}}}\"");
+            SolutionFileContent.WriteLine("EndProject");
         }
         
         foreach (var folder in solution.Folders)
         {
-            SolutionFileContent.AppendLine($"Project(\"{{{folder.Id}}}\") = \"{folder.Name}\", \"{folder.Name}\", \"{{{folder.Id}}}\"");
-            SolutionFileContent.AppendLine("EndProject");
+            SolutionFileContent.WriteLine($"Project(\"{{{ProjectTypeIdentifiers.SolutionFolder}}}\") = \"{folder.Name}\", \"{folder.Name}\", \"{{{folder.Id}}}\"");
+
+            SolutionFileContent.IncreaseIndent();
+            foreach (var project in folder.Projects)
+            {
+                SolutionFileContent.WriteLine($"ProjectSection(ProjectDependencies) = postProject");
+                SolutionFileContent.IncreaseIndent();
+                SolutionFileContent.WriteLine($"{{{project.Id}}} = {{{project.Id}}}");
+                SolutionFileContent.WriteLine("EndProjectSection");
+            }
+            
+            SolutionFileContent.WriteLine("ProjectSection(SolutionItems) = preProject");
+            foreach (var file in folder.Files)
+            {
+                SolutionFileContent.IncreaseIndent();
+                SolutionFileContent.WriteLine($"{file.Name} = {file.Name}");
+                SolutionFileContent.DecreaseIndent();
+            }
+            SolutionFileContent.WriteLine("EndProjectSection");
+            SolutionFileContent.DecreaseIndent();
+            
+            SolutionFileContent.WriteLine("EndProject");
         }
-        
-        
     }
 
     public static async Task<string> GetSolutionFileContentAsync(ISolution solution)
@@ -44,6 +62,23 @@ public static class SolutionWriter
         SolutionFileContent.Clear();
         AppendHeader();
         AppendProjectsAndFolders(solution);
-        return await Task.FromResult(SolutionFileContent.ToString());
+        AppendConfigurations(solution);
+        return await Task.FromResult(SolutionFileContent.ToString().ReplaceLineEndings("\n"));
+    }
+
+    private static void AppendConfigurations(ISolution solution)
+    {
+        SolutionFileContent.WriteLine("Global");
+        SolutionFileContent.IncreaseIndent();
+        SolutionFileContent.WriteLine("GlobalSection(SolutionConfigurationPlatforms) = preSolution");
+        SolutionFileContent.IncreaseIndent();
+        foreach (var configuration in solution.Configurations)
+        {
+            SolutionFileContent.WriteLine($"{configuration.Name} = {configuration.Name}");
+        }
+        SolutionFileContent.DecreaseIndent();
+        SolutionFileContent.WriteLine("EndGlobalSection");
+        SolutionFileContent.DecreaseIndent();
+        SolutionFileContent.WriteLine("EndGlobal");
     }
 }
