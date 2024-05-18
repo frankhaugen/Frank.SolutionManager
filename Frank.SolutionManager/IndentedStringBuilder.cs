@@ -2,45 +2,47 @@
 
 namespace Frank.SolutionManager;
 
-public class IndentedStringBuilder : IIndentedStringBuilder
+public class IndentedStringBuilder : IDisposable
 {
-	private StringBuilder _builder = new StringBuilder();
+	private StringBuilder _builder;
 	private int _indentLevel = 0;
 	private readonly string _indentString;
 
 	public IndentedStringBuilder(string indentString = "    ")  // Default to 4 spaces
 	{
 		_indentString = indentString;
+		_builder = new StringBuilder();
 	}
 
-	public IIndentedStringBuilder IncreaseIndent()
+	public IndentedStringBuilder IncreaseIndent(int i = 1)
 	{
-		_indentLevel++;
+		_indentLevel += i;
+		
 		return this;
 	}
 
-	public IIndentedStringBuilder DecreaseIndent()
+	public IndentedStringBuilder DecreaseIndent(int i = 1)
 	{
-		if (_indentLevel > 0)
-			_indentLevel--;
+		if (_indentLevel > 0 && i > 0 && i <= _indentLevel)
+			_indentLevel -= i;
 		return this;
 	}
 
-	public IIndentedStringBuilder Write(string text)
+	public IndentedStringBuilder Write(string text)
 	{
 		_builder.Append(new String(_indentString[0], _indentLevel * _indentString.Length));
 		_builder.Append(text);
 		return this;
 	}
 
-	public IIndentedStringBuilder WriteLine(string line = "")
+	public IndentedStringBuilder WriteLine(string line = "")
 	{
 		_builder.Append(new String(_indentString[0], _indentLevel * _indentString.Length));
 		_builder.AppendLine(line);
 		return this;
 	}
 
-	public IIndentedStringBuilder Write(string format, params object?[] args)
+	public IndentedStringBuilder Write(string format, params object?[] args)
 	{
 		string formattedText = string.Format(format, args);
 		_builder.Append(new String(_indentString[0], _indentLevel * _indentString.Length));
@@ -48,7 +50,7 @@ public class IndentedStringBuilder : IIndentedStringBuilder
 		return this;
 	}
 
-	public IIndentedStringBuilder WriteLine(string format, params object[] args)
+	public IndentedStringBuilder WriteLine(string format, params object[] args)
 	{
 		string formattedText = string.Format(format, args);
 		_builder.Append(new String(_indentString[0], _indentLevel * _indentString.Length));
@@ -56,7 +58,7 @@ public class IndentedStringBuilder : IIndentedStringBuilder
 		return this;
 	}
 
-	public IIndentedStringBuilder WriteLine(IIndentedStringBuilder other)
+	public IndentedStringBuilder WriteLine(IIndentedStringBuilder other)
 	{
 		if (other is IndentedStringBuilder otherBuilder)
 		{
@@ -77,4 +79,11 @@ public class IndentedStringBuilder : IIndentedStringBuilder
 	/// </summary>
 	/// <returns></returns>
 	public override string ToString() => _builder.ToString();
+
+	/// <inheritdoc />
+	public void Dispose()
+	{
+		_builder.Clear();
+		_builder = null!;
+	}
 }

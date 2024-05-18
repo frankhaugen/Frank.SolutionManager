@@ -35,4 +35,7 @@ public class Project(FileInfo projectFile, Guid id) : IProject
         foreach (var projectReference in projectReferences) _projectReferences.Add(projectReference);
         return this;
     }
+
+    /// <inheritdoc />
+    public string GetRelativePath() => Path.GetRelativePath(ProjectFile.Directory?.Parent?.FullName ?? projectFile.Name, ProjectFile.FullName);
 }

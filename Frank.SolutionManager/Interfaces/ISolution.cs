@@ -14,7 +14,7 @@ public interface ISolution : INamed, IContainFolders, IContainProjects, IContain
     ISolution AddFolder(IFolder folder);
     ISolution AddFolders(IEnumerable<IFolder> folders);
     
-    ISolution AddConfiguration(PlatformConfiguration configuration);
-    ISolution AddConfigurations(IEnumerable<PlatformConfiguration> configurations);
+    ISolution AddConfiguration(PlatformSolutionConfiguration configuration);
+    ISolution AddConfigurations(IEnumerable<PlatformSolutionConfiguration> configurations);
     
 }

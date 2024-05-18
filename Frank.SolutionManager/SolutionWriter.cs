@@ -4,7 +4,7 @@ namespace Frank.SolutionManager;
 
 public static class SolutionWriter
 {
-    private static readonly IIndentedStringBuilder SolutionFileContent = new IndentedStringBuilder();
+    private static readonly IndentedStringBuilder SolutionFileContent = new IndentedStringBuilder();
 
     public static async Task WriteSolutionFileAsync(DirectoryInfo solutionDirectory, ISolution solution)
     {
@@ -16,6 +16,10 @@ public static class SolutionWriter
 
     private static void AppendHeader()
     {
+        // Microsoft Visual Studio Solution File, Format Version 12.00
+        // # Visual Studio Version 17
+        // VisualStudioVersion = 17.0.31903.59
+        // MinimumVisualStudioVersion = 10.0.40219.1
         SolutionFileContent.WriteLine("Microsoft Visual Studio Solution File, Format Version 12.00");
         SolutionFileContent.WriteLine("# Visual Studio Version 17");
         SolutionFileContent.WriteLine("VisualStudioVersion = 17.0.31903.59");
@@ -26,34 +30,18 @@ public static class SolutionWriter
     {
         foreach (var project in solution.Projects)
         {
-            SolutionFileContent.WriteLine($"Project(\"{{{ProjectTypeIdentifiers.CSharp}}}\") = \"{project.Name}\", \"{Path.Combine(project.ProjectFile.Directory!.Name, project.ProjectFile.Name)}\", \"{{{project.Id}}}\"");
-            SolutionFileContent.WriteLine("EndProject");
+            SolutionFileContent.WriteLine(new ProjectSection()
+            {
+                Project = project
+            }.ToString());
         }
         
         foreach (var folder in solution.Folders)
         {
-            SolutionFileContent.WriteLine($"Project(\"{{{ProjectTypeIdentifiers.SolutionFolder}}}\") = \"{folder.Name}\", \"{folder.Name}\", \"{{{folder.Id}}}\"");
-
-            SolutionFileContent.IncreaseIndent();
-            foreach (var project in folder.Projects)
+            SolutionFileContent.WriteLine(new FolderSection()
             {
-                SolutionFileContent.WriteLine($"ProjectSection(ProjectDependencies) = postProject");
-                SolutionFileContent.IncreaseIndent();
-                SolutionFileContent.WriteLine($"{{{project.Id}}} = {{{project.Id}}}");
-                SolutionFileContent.WriteLine("EndProjectSection");
-            }
-            
-            SolutionFileContent.WriteLine("ProjectSection(SolutionItems) = preProject");
-            foreach (var file in folder.Files)
-            {
-                SolutionFileContent.IncreaseIndent();
-                SolutionFileContent.WriteLine($"{file.Name} = {file.Name}");
-                SolutionFileContent.DecreaseIndent();
-            }
-            SolutionFileContent.WriteLine("EndProjectSection");
-            SolutionFileContent.DecreaseIndent();
-            
-            SolutionFileContent.WriteLine("EndProject");
+                Folder = folder
+            }.ToString());
         }
     }
 
@@ -68,17 +56,9 @@ public static class SolutionWriter
 
     private static void AppendConfigurations(ISolution solution)
     {
-        SolutionFileContent.WriteLine("Global");
-        SolutionFileContent.IncreaseIndent();
-        SolutionFileContent.WriteLine("GlobalSection(SolutionConfigurationPlatforms) = preSolution");
-        SolutionFileContent.IncreaseIndent();
         foreach (var configuration in solution.Configurations)
         {
-            SolutionFileContent.WriteLine($"{configuration.Name} = {configuration.Name}");
+            SolutionFileContent.WriteLine(configuration.ToString());
         }
-        SolutionFileContent.DecreaseIndent();
-        SolutionFileContent.WriteLine("EndGlobalSection");
-        SolutionFileContent.DecreaseIndent();
-        SolutionFileContent.WriteLine("EndGlobal");
     }
 }

@@ -24,13 +24,6 @@ public static class SolutionParser
         solution.AddProjects(projects);
         solution.AddFolders(folders);
         
-        var configurations = parsedSolution
-            .ConfigurationPlatforms
-            .Select(cp => new PlatformConfiguration(cp.Name, cp.Platform, cp.Configuration))
-            .ToList();
-        
-        solution.AddConfigurations(configurations);
-        
         return solution;
     }
 

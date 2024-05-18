@@ -15,4 +15,6 @@ public interface IProject : INamed, IIdentifiable
     IProject AddNugetPackages(IEnumerable<INugetPackage> nugetPackages);
     
     IProject AddProjectReferences(IEnumerable<IProjectReference> projectReferences);
+    
+    string GetRelativePath();
 }

@@ -4,12 +4,12 @@ public class Solution : ISolution
 {
     private readonly HashSet<IFolder> _folders = new();
     private readonly HashSet<IProject> _projects = new();
-    private readonly HashSet<PlatformConfiguration> _configurations = new();
+    private readonly HashSet<PlatformSolutionConfiguration> _configurations = new();
 
     public string Name { get; }
     public IEnumerable<IFolder> Folders => _folders;
     public IEnumerable<IProject> Projects => _projects;
-    public IEnumerable<PlatformConfiguration> Configurations => _configurations;
+    public IEnumerable<PlatformSolutionConfiguration> Configurations => _configurations;
 
     public FileInfo SolutionFile { get; }
     
@@ -65,14 +65,14 @@ public class Solution : ISolution
     }
 
     /// <inheritdoc />
-    public ISolution AddConfiguration(PlatformConfiguration configuration)
+    public ISolution AddConfiguration(PlatformSolutionConfiguration configuration)
     {
         _configurations.Add(configuration);
         return this;
     }
 
     /// <inheritdoc />
-    public ISolution AddConfigurations(IEnumerable<PlatformConfiguration> configurations)
+    public ISolution AddConfigurations(IEnumerable<PlatformSolutionConfiguration> configurations)
     {
         foreach (var configuration in configurations)
             _configurations.Add(configuration);

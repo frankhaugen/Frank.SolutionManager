@@ -8,4 +8,8 @@
         <PackageReference Include="SlnParser" Version="4.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Frank.SolutionManager.Internals\Frank.SolutionManager.Internals.csproj" />
+    </ItemGroup>
+
 </Project>
