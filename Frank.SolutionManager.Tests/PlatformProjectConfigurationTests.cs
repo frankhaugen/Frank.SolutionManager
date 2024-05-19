@@ -1,3 +1,4 @@
+using Frank.SolutionManager.Legacy.Sections;
 using Xunit.Abstractions;
 
 namespace Frank.SolutionManager.Tests;

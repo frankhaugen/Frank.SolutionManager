@@ -2,5 +2,5 @@
 
 public interface IContainFolders
 {
-    IEnumerable<IFolder> Folders { get; }
+    IReadOnlySet<IFolder> Folders { get; }
 }

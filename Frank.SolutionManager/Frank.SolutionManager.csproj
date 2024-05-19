@@ -5,11 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="SlnParser" Version="4.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Frank.SolutionManager.Internals\Frank.SolutionManager.Internals.csproj" />
+        <PackageReference Include="Atom.SlnFile" Version="1.0.2" />
     </ItemGroup>
 
 </Project>

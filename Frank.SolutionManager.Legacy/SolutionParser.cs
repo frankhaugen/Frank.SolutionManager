@@ -1,4 +1,6 @@
-﻿namespace Frank.SolutionManager;
+﻿using SlnParser.Contracts;
+
+namespace Frank.SolutionManager.Legacy;
 
 public static class SolutionParser
 {
@@ -13,16 +15,16 @@ public static class SolutionParser
         var folders = parsedSolution.Projects
             .Where(p => p.Type == SlnParser.Contracts.ProjectType.SolutionFolder)
             .Cast<SlnParser.Contracts.SolutionFolder>()
-            .Select(f => new Folder(f.Name, f.Id).AddFiles(f.Files.Select(x => new File(x, GetRelativePath(solutionFileInfo, x)))))
+            // .Select(f => new Folder(f.Name, f.Id).AddFiles(f.Files.Select(x => new File(x, GetRelativePath(solutionFileInfo, x)))))
             .ToList();
 
-        var projects = parsedSolution.Projects
-            .Where(p => p.Type != SlnParser.Contracts.ProjectType.SolutionFolder)
-            .Cast<SlnParser.Contracts.SolutionProject>()
-            .Select(p => new Project(p.File, p.Id));
+        // var projects = parsedSolution.Projects
+            // .Where(p => p.Type != SlnParser.Contracts.ProjectType.SolutionFolder)
+            // .Cast<SlnParser.Contracts.SolutionProject>()
+            // .Select(p => new Project(p.File, p.Id));
         
-        solution.AddProjects(projects);
-        solution.AddFolders(folders);
+        // solution.AddProjects(projects);
+        // solution.AddFolders(folders);
         
         return solution;
     }

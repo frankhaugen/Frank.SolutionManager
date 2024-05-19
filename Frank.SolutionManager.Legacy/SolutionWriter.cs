@@ -1,6 +1,8 @@
 ﻿using System.Text;
+using Frank.SolutionManager.Legacy.Sections;
+using SlnParser.Contracts;
 
-namespace Frank.SolutionManager;
+namespace Frank.SolutionManager.Legacy;
 
 public static class SolutionWriter
 {
@@ -36,13 +38,13 @@ public static class SolutionWriter
             }.ToString());
         }
         
-        foreach (var folder in solution.Folders)
-        {
-            SolutionFileContent.WriteLine(new FolderSection()
-            {
-                Folder = folder
-            }.ToString());
-        }
+        // foreach (var folder in solution.Folders)
+        // {
+        //     SolutionFileContent.WriteLine(new FolderSection()
+        //     {
+        //         Folder = folder
+        //     }.ToString());
+        // }
     }
 
     public static async Task<string> GetSolutionFileContentAsync(ISolution solution)
@@ -56,9 +58,9 @@ public static class SolutionWriter
 
     private static void AppendConfigurations(ISolution solution)
     {
-        foreach (var configuration in solution.Configurations)
-        {
-            SolutionFileContent.WriteLine(configuration.ToString());
-        }
+        // foreach (var configuration in solution.Configurations)
+        // {
+        //     SolutionFileContent.WriteLine(configuration.ToString());
+        // }
     }
 }

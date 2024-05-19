@@ -9,15 +9,10 @@ public class Folder : IFolder
     public string Name { get; }
     public Guid Id { get; } = Guid.NewGuid();
 
-    public IEnumerable<IFolder> Folders => _folders;
-    public IEnumerable<IProject> Projects => _projects;
+    public IReadOnlySet<IFolder> Folders => _folders;
+    public IReadOnlySet<IProject> Projects => _projects;
     public IEnumerable<IFile> Files => _files;
 
-    public Folder(string name)
-    {
-        Name = name;
-    }
-    
     public Folder(string name, Guid id)
     {
         Name = name;

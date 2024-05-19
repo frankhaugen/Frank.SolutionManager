@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Frank.SolutionManager.Parsers;
+namespace Frank.SolutionManager.Legacy.Parsers;
 
 public static class FileInfoExtensions
 {

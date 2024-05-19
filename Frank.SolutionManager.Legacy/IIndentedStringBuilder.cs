@@ -1,4 +1,4 @@
-namespace Frank.SolutionManager;
+namespace Frank.SolutionManager.Legacy;
 
 /// <summary>
 /// Defines the functionality for a builder that supports indentation-sensitive string building.

@@ -1,4 +1,6 @@
-namespace Frank.SolutionManager;
+using SlnParser.Contracts;
+
+namespace Frank.SolutionManager.Legacy.Sections;
 
 public class ProjectSection
 {
@@ -23,7 +25,7 @@ public class ProjectSection
     public override string ToString()
     {
         using var indentedStringBuilder = new IndentedStringBuilder();
-        indentedStringBuilder.WriteLine($"Project(\"{{{ProjectTypeIdentifiers.CSharp.ToString().ToUpper()}}}\") = \"{Project.Name}\", \"{Project.GetRelativePath()}\", \"{{{Project.Id.ToString().ToUpper()}}}\"");
+        // indentedStringBuilder.WriteLine($"Project(\"{{{ProjectTypeIdentifiers.CSharp.ToString().ToUpper()}}}\") = \"{Project.Name}\", \"{Project.GetRelativePath()}\", \"{{{Project.Id.ToString().ToUpper()}}}\"");
         indentedStringBuilder.Write("EndProject");
         return indentedStringBuilder.ToString();
     }

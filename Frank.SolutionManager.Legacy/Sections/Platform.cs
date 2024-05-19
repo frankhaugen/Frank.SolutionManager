@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Frank.SolutionManager;
+namespace Frank.SolutionManager.Legacy.Sections;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public enum Platform

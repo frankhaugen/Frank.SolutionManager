@@ -1,4 +1,4 @@
-namespace Frank.SolutionManager;
+namespace Frank.SolutionManager.Legacy.Sections;
 
 public class PlatformSolutionConfiguration
 {

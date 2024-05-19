@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using Frank.SolutionManager.Parsers;
+using Frank.SolutionManager.Legacy.Parsers;
 using Xunit.Abstractions;
 
 namespace Frank.SolutionManager.Tests.Parsers;
@@ -19,8 +19,9 @@ public class FileInfoExtensionsTest(ITestOutputHelper outputHelper)
             _outputHelper.WriteLine(match);
         }
         
-        Assert.Equal(2, matches.Count());
+        Assert.Equal(4, matches.Count());
     }
+    
     [Fact]
     public void TestFindAll_SolutionFolder()
     {

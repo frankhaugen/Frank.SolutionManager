@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Frank.SolutionManager;
+namespace Frank.SolutionManager.Legacy;
 
 public class IndentedStringBuilder : IDisposable
 {

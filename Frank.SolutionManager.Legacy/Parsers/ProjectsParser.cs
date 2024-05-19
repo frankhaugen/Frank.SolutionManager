@@ -1,4 +1,6 @@
-﻿namespace Frank.SolutionManager.Parsers;
+﻿using SlnParser.Contracts;
+
+namespace Frank.SolutionManager.Legacy.Parsers;
 
 public static class ProjectsParser
 {
