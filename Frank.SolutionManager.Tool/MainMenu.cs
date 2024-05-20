@@ -28,6 +28,7 @@ public class MainMenu
                         .PageSize(10)
                         .AddChoices(new[]
                         {
+                            MenuChoices.CreateSolution,
                             MenuChoices.SetOutputDirectory,
                             MenuChoices.SetRepositoriesDirectory,
                             MenuChoices.ListAllRepositories,

@@ -1,4 +1,6 @@
-﻿namespace Frank.SolutionManager;
+﻿using Atom.Util;
+
+namespace Frank.SolutionManager;
 
 public class Solution : ISolution
 {
@@ -28,6 +30,9 @@ public class Solution : ISolution
             throw new ArgumentException($"The solution file already exists: '{solutionFile.FullName}'\n use Solution.Parse() -method instead", nameof(solutionFile));
         Name = Path.GetFileNameWithoutExtension(solutionFile.Name);
         SolutionFile = solutionFile;
+        
+        Header = new SolutionFileHeader();
+        GlobalSection = new SolutionGlobalSection(new List<SlnFileSection>());
     }
     
     internal Solution(FileInfo solutionFile, string name)
