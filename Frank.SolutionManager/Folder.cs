@@ -18,6 +18,11 @@ public class Folder : IFolder
         Name = name;
         Id = id;
     }
+    
+    public Folder(string name)
+    {
+        Name = name;
+    }
 
     public IFolder AddFolder(IFolder folder)
     {

@@ -4,6 +4,8 @@ public interface ISolution : INamed, IContainFolders, IContainProjects
 {
     SolutionFileHeader Header { get; }
     SolutionGlobalSection GlobalSection { get; }
+    
+    [JsonConverter(typeof(FileInfoJsonConverter))]
     FileInfo SolutionFile { get; }
     
     ISolution AddProject(IProject project);

@@ -1,7 +1,8 @@
 ﻿namespace Frank.SolutionManager;
 
-public interface IProject : INamed, IIdentifiable
+public interface IProject : INamed, IIdentifiable, IXDocument
 {
+    [JsonConverter(typeof(FileInfoJsonConverter))]
     FileInfo ProjectFile { get; }
     
     IEnumerable<INugetPackage> NugetPackages { get; }
@@ -16,5 +17,5 @@ public interface IProject : INamed, IIdentifiable
     
     IProject AddProjectReferences(IEnumerable<IProjectReference> projectReferences);
     
-    string GetRelativePath();
+    string GetRelativePath(DirectoryInfo solutionDirectory);
 }

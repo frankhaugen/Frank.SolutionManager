@@ -14,6 +14,7 @@ public class Solution : ISolution
 
     public required SolutionGlobalSection GlobalSection { get; init; }
     
+    [JsonConverter(typeof(FileInfoJsonConverter))]
     public FileInfo SolutionFile { get; }
     
     /// <summary>
@@ -24,8 +25,14 @@ public class Solution : ISolution
     public Solution(FileInfo solutionFile)
     {
         if (solutionFile.Exists)
-            throw new ArgumentException($"The solution file already exists. '{solutionFile.FullName}'", nameof(solutionFile));
+            throw new ArgumentException($"The solution file already exists: '{solutionFile.FullName}'\n use Solution.Parse() -method instead", nameof(solutionFile));
         Name = Path.GetFileNameWithoutExtension(solutionFile.Name);
+        SolutionFile = solutionFile;
+    }
+    
+    internal Solution(FileInfo solutionFile, string name)
+    {
+        Name = name;
         SolutionFile = solutionFile;
     }
     

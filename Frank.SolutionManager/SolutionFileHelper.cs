@@ -10,7 +10,7 @@ public static class SolutionFileHelper
             throw new ArgumentException("The solution file does not exist or is not a .sln file.", nameof(solutionFile));
         var solutionFileData = SlnFile.ReadFromFile(solutionFile.FullName);
         
-        var solution = new Solution(solutionFile)
+        var solution = new Solution(solutionFile, Path.GetFileNameWithoutExtension(solutionFile.Name))
         {
             Header = new SolutionFileHeader(solutionFileData.Header),
             GlobalSection = new SolutionGlobalSection(solutionFileData.GlobalSections),
@@ -19,7 +19,7 @@ public static class SolutionFileHelper
         foreach (var project in solutionFileData.Projects.Where(x => Guid.Parse(x.TypeId) == ProjectTypeIdentifiers.CSharp))
         {
             var projectFile = new FileInfo(solutionFileData.Browse().GetSolutionPath(project.ProjectId));
-            var projectReference = new Project(projectFile, Guid.Parse(project.ProjectId));
+            var projectReference = new Project(projectFile);
             solution.AddProject(projectReference);
         }
         

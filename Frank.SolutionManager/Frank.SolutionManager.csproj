@@ -6,6 +6,7 @@
 
     <ItemGroup>
         <PackageReference Include="Atom.SlnFile" Version="1.0.2" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.9.2" />
     </ItemGroup>
 
 </Project>
