@@ -2,11 +2,18 @@
 
 using Frank.SolutionManager.Tool;
 using Frank.SolutionManager.Tool.Actions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-await new ServiceCollection()
-    .AddSingleton<IAction, RepositoriesDirectorySelectorAction>()
-    .AddSingleton<IAction, SetOutputDirectoryAction>()
+var builder = Host.CreateEmptyApplicationBuilder(new HostApplicationBuilderSettings());
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", reloadOnChange: true, optional: false)
+    .AddEnvironmentVariables();
+
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"))
+    .AddSingleton<IAction, SetRepositoriesDirectoryAction>()
     .AddSingleton<IAction, CreateSolutionAction>()
     .AddSingleton<IAction, ExitAction>()
     .AddSingleton<IAction, FetchAllRepositoriesAction>()
@@ -15,9 +22,11 @@ await new ServiceCollection()
     .AddSingleton<IAction, PullAllRepositoriesAction>()
     .AddSingleton<IValueConverter, ValueConverter>()
     .AddSingleton<IGitService, GitService>()
-    .AddSingleton<ISettings, Settings>()
     .AddSingleton<ActionChoiceCache>()
-    .AddSingleton<MainMenu>()
-    .BuildServiceProvider(new ServiceProviderOptions() { ValidateOnBuild = true, ValidateScopes = true })
-    .GetRequiredService<MainMenu>()
-    .RunAsync();
+    .AddSingleton<MainMenu>();
+
+var host = builder.Build();
+
+var mainMenu = host.Services.GetRequiredService<MainMenu>();
+
+await mainMenu.RunAsync();

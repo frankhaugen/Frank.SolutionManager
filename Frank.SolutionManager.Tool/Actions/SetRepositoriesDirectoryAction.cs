@@ -1,6 +1,8 @@
-﻿namespace Frank.SolutionManager.Tool.Actions;
+﻿using Frank.SolutionManager.Tool.Components;
 
-internal class RepositoriesDirectorySelectorAction(ISettings settings) : IAction
+namespace Frank.SolutionManager.Tool.Actions;
+
+internal class SetRepositoriesDirectoryAction(IOptions<AppSettings> options) : IAction
 {
     /// <inheritdoc />
     public ActionName Name => ActionName.SetRepositoriesDirectory;
@@ -13,8 +15,7 @@ internal class RepositoriesDirectorySelectorAction(ISettings settings) : IAction
         {
             try
             {
-                var repositoriesDirectoryPath = AnsiConsole.Ask<string>("Enter the repositories directory: ");
-                repositoriesDirectory = new DirectoryInfo(repositoriesDirectoryPath);
+                repositoriesDirectory = AnsiConsole.Prompt(new DirectorySelector());
                 
                 if (repositoriesDirectory.Exists) continue;
                 repositoriesDirectory.Create();
@@ -26,7 +27,7 @@ internal class RepositoriesDirectorySelectorAction(ISettings settings) : IAction
             }        
         }
         
-        settings.SetValue(SettingKey.RepositoriesDirectory.ToString(), repositoriesDirectory.FullName);
+        options.Value.RepositoriesRootPath = repositoriesDirectory.FullName;
         
         await Task.CompletedTask;
     }

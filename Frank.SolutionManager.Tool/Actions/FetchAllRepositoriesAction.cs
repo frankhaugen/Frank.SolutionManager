@@ -1,36 +1,25 @@
-﻿using System.Diagnostics;
-using LibGit2Sharp;
+﻿namespace Frank.SolutionManager.Tool.Actions;
 
-namespace Frank.SolutionManager.Tool.Actions;
-
-public class FetchAllRepositoriesAction : IAction
+public class FetchAllRepositoriesAction : BaseAction, IAction
 {
-    private readonly ISettings _settings;
+    private readonly IGitService _gitService;
 
-    public FetchAllRepositoriesAction(ISettings settings)
+    public FetchAllRepositoriesAction(IGitService gitService)
     {
-        _settings = settings;
+        _gitService = gitService;
     }
 
     public ActionName Name => ActionName.FetchAllRepositories;
     
     public async Task ExecuteAsync()
     {
-        var repositoriesDirectory = new DirectoryInfo(_settings.GetValue(SettingKey.RepositoriesDirectory.ToString()) ?? string.Empty);
+        var repositories = _gitService.GetRepositories();
         
-        var gitDirectories = repositoriesDirectory.GetDirectories(".git", SearchOption.AllDirectories);
-        
-        foreach (var gitDirectory in gitDirectories)
+        foreach (var repository in repositories)
         {
-            var repositoryDirectory = gitDirectory.Parent;
-            var repositoryName = repositoryDirectory!.Name;
-            
-            AnsiConsole.MarkupLine($"Fetching repository '{repositoryName}'...");
-            
-            // use libgit2sharp
-            var repository = new Repository(repositoryDirectory.FullName);
-            Commands.Fetch(repository, "origin", Array.Empty<string>(), null, null);
-                
+            Try(() => _gitService.Fetch(repository));
         }
+        
+        await Task.CompletedTask;
     }
 }

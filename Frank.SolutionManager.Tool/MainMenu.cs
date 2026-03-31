@@ -26,17 +26,7 @@ public class MainMenu
                     new SelectionPrompt<string>()
                         .Title("What do you want to do?")
                         .PageSize(10)
-                        .AddChoices(new[]
-                        {
-                            MenuChoices.CreateSolution,
-                            MenuChoices.SetOutputDirectory,
-                            MenuChoices.SetRepositoriesDirectory,
-                            MenuChoices.ListAllRepositories,
-                            MenuChoices.CheckoutDefaultBranchInAllRepositories,
-                            MenuChoices.FetchAllRepositories,
-                            MenuChoices.PullAllRepositories,
-                            MenuChoices.Exit
-                        }));
+                        .AddChoices(MenuChoices.Choices.Values));
 
                 var action = _actionChoiceCache.Get(selection);
                 

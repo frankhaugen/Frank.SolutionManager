@@ -2,13 +2,13 @@
 
 namespace Frank.SolutionManager.Tool.Actions;
 
-public class PullAllRepositoriesAction : IAction
+public class PullAllRepositoriesAction : BaseAction, IAction
 {
-    private readonly ISettings _settings;
+    private readonly IGitService _gitService;
 
-    public PullAllRepositoriesAction(ISettings settings)
+    public PullAllRepositoriesAction(IGitService gitService)
     {
-        _settings = settings;
+        _gitService = gitService;
     }
 
     /// <inheritdoc />
@@ -17,47 +17,13 @@ public class PullAllRepositoriesAction : IAction
     /// <inheritdoc />
     public async Task ExecuteAsync()
     {
-        var repositoriesDirectory = new DirectoryInfo(_settings.GetValue(SettingKey.RepositoriesDirectory.ToString()));
-        var repositories = repositoriesDirectory.GetDirectories();
-
+        var repositories = _gitService.GetRepositories();
+        
         foreach (var repository in repositories)
         {
-            var repositoryName = repository.Name;
-            var repositoryPath = repository.FullName;
-
-            AnsiConsole.MarkupLine($"Pulling repository [bold]{repositoryName}[/]...");
-
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "git",
-                    Arguments = "pull",
-                    WorkingDirectory = repositoryPath,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                }
-            };
-
-            process.Start();
-            process.WaitForExit();
-
-            var output = process.StandardOutput.ReadToEnd();
-            var error = process.StandardError.ReadToEnd();
-
-            if (!string.IsNullOrWhiteSpace(output))
-            {
-                AnsiConsole.MarkupLine($"[green]{output}[/]");
-            }
-
-            if (!string.IsNullOrWhiteSpace(error))
-            {
-                AnsiConsole.MarkupLine($"[red]{error}[/]");
-            }
+            Try(() => _gitService.Pull(repository));
         }
-
+        
         await Task.CompletedTask;
     }
 }
