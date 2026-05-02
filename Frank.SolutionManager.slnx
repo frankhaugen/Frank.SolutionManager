@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".github/workflows/merge.yml" />
+    <File Path=".github/workflows/pull-request.yml" />
+    <File Path=".github/workflows/release.yml" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="icon.png" />
+    <File Path="LICENSE" />
+    <File Path="nuget.config" />
+    <File Path="README.md" />
+    <Project Path="ClassLibrary1/ClassLibrary1.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/SolutionFolder/">
+    <Project Path="ClassLibrary2/ClassLibrary2.csproj" />
+  </Folder>
+  <Project Path="Frank.SolutionManager.Internals/Frank.SolutionManager.Internals.csproj" />
+  <Project Path="Frank.SolutionManager.Legacy/Frank.SolutionManager.Legacy.csproj" />
+  <Project Path="Frank.SolutionManager.Tests/Frank.SolutionManager.Tests.csproj" />
+  <Project Path="Frank.SolutionManager.Tool/Frank.SolutionManager.Tool.csproj" />
+  <Project Path="Frank.SolutionManager/Frank.SolutionManager.csproj" />
+</Solution>
